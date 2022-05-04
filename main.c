@@ -267,6 +267,9 @@ int main(int argc, char *argv[])
 	}
 
 	g = gfa_read(argv[o.ind]);
+
+	count_weakcomponents (g);
+
 	if (g == 0) {
 		fprintf(stderr, "[ERROR] failed to load the graph from file '%s'\n", argv[o.ind]);
 		return 1;

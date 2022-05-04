@@ -1,6 +1,7 @@
 CC=			gcc
 CFLAGS=		-g -Wall -Wc++-compat -std=c99 -msse4 -O3
-CPPFLAGS=
+CPPFLAGS=		-g -Wall -std=c++11 -msse4 -O3
+CFLAGS=
 INCLUDES=
 OBJS=		kalloc.o kthread.o algo.o sys.o gfa-base.o gfa-io.o gfa-aug.o gfa-bbl.o gfa-ed.o \
             sketch.o misc.o bseq.o options.o shortk.o miniwfa.o \
@@ -18,12 +19,12 @@ endif
 .PHONY:all clean depend
 
 .c.o:
-		$(CC) -c $(CFLAGS) $(CPPFLAGS) $(INCLUDES) $< -o $@
+		$(CXX) -c $(CFLAGS) $(CPPFLAGS) $(INCLUDES) $< -o $@
 
 all:$(PROG)
 
 minigraph:$(OBJS) main.o
-		$(CC) $(CFLAGS) $^ -o $@ $(LIBS)
+		$(CXX) $(CFLAGS) $^ -o $@ $(LIBS)
 
 clean:
 		rm -fr gmon.out *.o a.out $(PROG) *~ *.a *.dSYM

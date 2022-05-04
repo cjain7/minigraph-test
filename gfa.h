@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <vector>
 
 #define GFA_VERSION "0.5-r247-dirty"
 
@@ -114,7 +115,7 @@ typedef struct {
 } gfa_ins_t;
 
 extern int gfa_verbose;
-extern unsigned char gfa_comp_table[256];
+//extern unsigned char gfa_comp_table[256];
 
 #ifdef __cplusplus
 extern "C" {
@@ -160,6 +161,17 @@ static inline void gfa_seg_del(gfa_t *g, uint32_t s)
 			av[i].del = 1;
 			gfa_arc_del(g, av[i].w^1, v^1, 1);
 		}
+	}
+}
+
+static inline void count_weakcomponents(gfa_t *g)
+{
+	uint32_t n_vtx = gfa_n_vtx(g);
+	std::vector<bool> visited (n_vtx, false);
+
+	for (uint32_t v = 0; v < n_vtx; ++v)
+	{
+		visited[v] = true;
 	}
 }
 
