@@ -269,6 +269,7 @@ int main(int argc, char *argv[])
 	g = gfa_read(argv[o.ind]);
 
 	count_weakcomponents (g);
+	isCyclic (g);
 
 	if (g == 0) {
 		fprintf(stderr, "[ERROR] failed to load the graph from file '%s'\n", argv[o.ind]);

@@ -184,7 +184,7 @@ static inline void explore_weakcomponent (uint32_t v, std::vector<bool> &visited
 	}
 }
 
-static inline void count_weakcomponents(gfa_t *g)
+static inline void count_weakcomponents (gfa_t *g)
 {
 	uint32_t n_vtx = gfa_n_vtx(g);
 	std::vector<bool> visited (n_vtx, false);
@@ -199,6 +199,45 @@ static inline void count_weakcomponents(gfa_t *g)
 		}
 	}
 	std::cerr << "count of weakly connected components in input graph is " << count_wcc << "\n";
+}
+
+static inline bool isCyclicUtil (uint32_t v, std::vector<bool> &visited, std::vector<bool> &recStack, gfa_t *g)
+{
+	visited[v] = true;
+	recStack[v] = true;
+
+	uint32_t nv = gfa_arc_n(g, v);  //out-neighbors of v
+	gfa_arc_t *av = gfa_arc_a(g, v);
+	for (uint32_t i = 0; i < nv; ++i) {
+		if (visited[av[i].w] == false && isCyclicUtil(av[i].w, visited, recStack, g))
+			return true;
+		else if (recStack[av[i].w] == true)
+			return true;
+	}
+
+	recStack[v] = false;
+	return false;
+}
+
+static inline void isCyclic (gfa_t *g)
+{
+	bool isCyclic = false;
+	uint32_t n_vtx = gfa_n_vtx(g);
+
+	// Mark all the vertices as not visited and not part of recursion stack
+	std::vector<bool> visited (n_vtx, false);
+	std::vector<bool> recStack (n_vtx, false);
+
+	for (uint32_t v = 0; v < n_vtx; ++v)
+	{
+		if (visited[v] == false && isCyclicUtil(v, visited, recStack, g))
+		{
+			isCyclic = true;
+			break;
+		}
+	}
+
+	std::cerr << "cycles found? " << std::boolalpha << isCyclic << "\n";
 }
 
 #endif
