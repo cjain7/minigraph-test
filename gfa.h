@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <vector>
+#include <iostream>
 
 #define GFA_VERSION "0.5-r247-dirty"
 
@@ -164,15 +165,40 @@ static inline void gfa_seg_del(gfa_t *g, uint32_t s)
 	}
 }
 
+static inline void explore_weakcomponent (uint32_t v, std::vector<bool> &visited, gfa_t *g)
+{
+	visited[v] = true;
+	uint32_t nv = gfa_arc_n(g, v);  //out-neighbors of v
+	gfa_arc_t *av = gfa_arc_a(g, v);
+	for (uint32_t i = 0; i < nv; ++i) {
+		if (visited[av[i].w] == false)
+			explore_weakcomponent (av[i].w, visited, g);
+	}
+
+	//compute in-neighbors of v through outgoing edges of v^1
+	nv = gfa_arc_n(g, v^1);
+	av = gfa_arc_a(g, v^1);
+	for (uint32_t i = 0; i < nv; ++i) {
+		if (visited[av[i].w^1] == false)
+			explore_weakcomponent (av[i].w^1, visited, g);
+	}
+}
+
 static inline void count_weakcomponents(gfa_t *g)
 {
 	uint32_t n_vtx = gfa_n_vtx(g);
 	std::vector<bool> visited (n_vtx, false);
+	uint32_t count_wcc = 0;
 
 	for (uint32_t v = 0; v < n_vtx; ++v)
 	{
-		visited[v] = true;
+		if (visited[v] == false)
+		{
+			explore_weakcomponent (v, visited, g);
+			count_wcc++;
+		}
 	}
+	std::cerr << "count of weakly connected components in input graph is " << count_wcc << "\n";
 }
 
 #endif
