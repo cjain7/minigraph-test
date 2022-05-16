@@ -212,7 +212,10 @@ static inline bool isCyclicUtil (uint32_t v, std::vector<bool> &visited, std::ve
 		if (visited[av[i].w] == false && isCyclicUtil(av[i].w, visited, recStack, g))
 			return true;
 		else if (recStack[av[i].w] == true)
+		{
+			std::cerr << "isCyclicUtil: " << g->seg[av[i].w>>1].name << " is within a cycle" << "\n";
 			return true;
+		}
 	}
 
 	recStack[v] = false;

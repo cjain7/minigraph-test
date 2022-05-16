@@ -265,7 +265,7 @@ void mg_ggsimple(void *km, const mg_ggopt_t *opt, gfa_t *g, int32_t n_seq, const
 					} else score = -1, mlen = 0, blen = pd > qd? pd : qd;
 					fprintf(stderr, "\nIS\t%d==%d\tnwcmp:%d\tmlen:%d\tblen:%d\n", pd, l_pseq, score, mlen, blen);
 				}
-				if (is_inv) { // turn one inversion to two events
+				if (is_inv && false) { // turn one inversion to two events
 					gfa_ins_t I_inv[2];
 					I_inv[0].ctg = I_inv[1].ctg = I.ctg;
 					// the first event
@@ -526,7 +526,7 @@ void mg_ggsimple_cigar(void *km, const mg_ggopt_t *opt, gfa_t *g, int32_t n_seq,
 					fprintf(stderr, "\nIS\t%d==%d\tnwcmp:%d\tmlen:%d\tblen:%d\n", pd, l_pseq, score, mlen, blen);
 					//if (I.voff[0] == 2305301) { for (k = st; k < en; ++k) fprintf(stderr, "%d%c", intv[k].len, "MIDNSHP=XB"[intv[k].op]); fprintf(stderr, "\n"); }
 				}
-				if (is_inv) { // turn one inversion to two events
+				if (is_inv && false) { // turn one inversion to two events
 					gfa_ins_t I_inv[2];
 					I_inv[0].ctg = I_inv[1].ctg = I.ctg;
 					// the first event
